@@ -1,0 +1,22 @@
+# 🧩 Step 1: Use lightweight Node.js image
+FROM node:22-alpine
+
+# 🧩 Step 2: Set working directory inside container
+WORKDIR /app
+
+# 🧩 Step 3: Copy dependency files first for better caching
+COPY package*.json ./
+
+# 🧩 Step 4: Install ALL dependencies (dev + prod)
+# We don’t use --production flag here because we need nodemon for hot reload
+RUN npm install
+
+# 🧩 Step 5: Copy the rest of the application source code
+COPY . .
+
+# 🧩 Step 6: Expose backend port
+EXPOSE 5000
+
+# 🧩 Step 7: Run the backend in development mode using nodemon
+CMD ["npm", "run", "dev"]
+
